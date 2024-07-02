@@ -17,7 +17,15 @@ namespace Library.Data
         public virtual DbSet<Book> Books { get; set; }
 
         public virtual DbSet<Address> Addresses { get; set; }
-        public virtual DbSet<Librarian> Librarians { get; set; }
+        public virtual DbSet<BookCopy> BookCopies { get; set; }
+
+        public virtual DbSet<Borrow> Borrows { get; set; }
+
+        public virtual DbSet<Genre> Genres { get; set; }
+
+        public virtual DbSet<Router> Routers { get; set; }
+
+        public virtual DbSet<Author> Authors { get; set; }
 
     }
 }

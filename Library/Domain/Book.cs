@@ -6,16 +6,19 @@ namespace Library.Domain
     public class Book
     {
         [Key]
-        public int id { get; set; }
+        public int Id { get; set; }
         public string? Title { get; set; }
-
+        [ForeignKey("Author")]
+        public int AuthorId { get; set; }
+        public Author Author { get; set; }
         public DateTime? DateCreated { get; set; }
 
         public DateTime? DateUpdated { get; set; }
-
+        [ForeignKey("Genre")]
+        public int? GenreId { get; set; }
         public Genre Genre { get; set; }
 
-        public string? BookImageURL { get; set; }
+        
 
         public string? PublishDate { get; set; }
 
@@ -25,11 +28,9 @@ namespace Library.Domain
 
         
 
-        public Boolean? IsPublic { get; set; }
+        public bool? IsPublic { get; set; }
 
 
-        [ForeignKey("User")]
-        public int? UserId { get; set; }
-        public User? User { get; set; }
+        public ICollection<BookCopy> BookCopies { get; set; }
     }
 }

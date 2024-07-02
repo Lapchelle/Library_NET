@@ -1,17 +1,12 @@
 ﻿namespace Library.Domain
 {
-    public enum Genre
+    public class Genre
     {
-        Современная,
-        Классическая,
-        Фантастика,
-        Детектив,
-        Hоманы,
-        Исторические,
-        Приключения,
-        Биографии,
-        Публицистика,
-        Поэзия
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; }
 
     }
 }
