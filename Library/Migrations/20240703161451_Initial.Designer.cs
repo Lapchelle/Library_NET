@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Library.Migrations
 {
     [DbContext(typeof(PostgresContext))]
-    [Migration("20240702142248_Initial")]
+    [Migration("20240703161451_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -92,10 +92,6 @@ namespace Library.Migrations
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("GenreId")
-                        .IsRequired()
-                        .HasColumnType("integer");
-
                     b.Property<bool?>("IsPublic")
                         .HasColumnType("boolean");
 
@@ -114,8 +110,6 @@ namespace Library.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
-
-                    b.HasIndex("GenreId");
 
                     b.ToTable("Books");
                 });
@@ -141,6 +135,21 @@ namespace Library.Migrations
                     b.HasIndex("BookId");
 
                     b.ToTable("BookCopies");
+                });
+
+            modelBuilder.Entity("Library.Domain.Book_Genre", b =>
+                {
+                    b.Property<int>("BookId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GenreId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("BookId", "GenreId");
+
+                    b.HasIndex("GenreId");
+
+                    b.ToTable("Book_Genres");
                 });
 
             modelBuilder.Entity("Library.Domain.Borrow", b =>
@@ -266,15 +275,7 @@ namespace Library.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Library.Domain.Genre", "Genre")
-                        .WithMany()
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Author");
-
-                    b.Navigation("Genre");
                 });
 
             modelBuilder.Entity("Library.Domain.BookCopy", b =>
@@ -286,6 +287,25 @@ namespace Library.Migrations
                         .IsRequired();
 
                     b.Navigation("Book");
+                });
+
+            modelBuilder.Entity("Library.Domain.Book_Genre", b =>
+                {
+                    b.HasOne("Library.Domain.Book", "Book")
+                        .WithMany("Book_Genres")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Library.Domain.Genre", "Genre")
+                        .WithMany("Book_Genres")
+                        .HasForeignKey("GenreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Book");
+
+                    b.Navigation("Genre");
                 });
 
             modelBuilder.Entity("Library.Domain.Borrow", b =>
@@ -321,11 +341,18 @@ namespace Library.Migrations
             modelBuilder.Entity("Library.Domain.Book", b =>
                 {
                     b.Navigation("BookCopies");
+
+                    b.Navigation("Book_Genres");
                 });
 
             modelBuilder.Entity("Library.Domain.BookCopy", b =>
                 {
                     b.Navigation("Borrows");
+                });
+
+            modelBuilder.Entity("Library.Domain.Genre", b =>
+                {
+                    b.Navigation("Book_Genres");
                 });
 
             modelBuilder.Entity("Library.Domain.Router", b =>

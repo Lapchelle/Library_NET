@@ -27,5 +27,23 @@ namespace Library.Data
 
         public virtual DbSet<Author> Authors { get; set; }
 
-    }
+        public virtual DbSet<Book_Genre> Book_Genres { get; set; }
+
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Book_Genre>()
+                .HasKey(pc => new { pc.BookId, pc.GenreId });
+            modelBuilder.Entity<Book_Genre>()
+                    .HasOne(p => p.Book)
+                    .WithMany(pc => pc.Book_Genres)
+                    .HasForeignKey(p => p.BookId);
+            modelBuilder.Entity<Book_Genre>()
+                    .HasOne(p => p.Genre)
+                    .WithMany(pc => pc.Book_Genres)
+                    .HasForeignKey(c => c.GenreId);
+        }
+
+}
 }

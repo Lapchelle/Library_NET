@@ -105,7 +105,6 @@ namespace Library.Migrations
                     AuthorId = table.Column<int>(type: "integer", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DateUpdated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    GenreId = table.Column<int>(type: "integer", nullable: false),
                     PublishDate = table.Column<string>(type: "text", nullable: true),
                     PublishHouse = table.Column<string>(type: "text", nullable: true),
                     PageCount = table.Column<int>(type: "integer", nullable: true),
@@ -120,8 +119,26 @@ namespace Library.Migrations
                         principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Book_Genres",
+                columns: table => new
+                {
+                    BookId = table.Column<int>(type: "integer", nullable: false),
+                    GenreId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Book_Genres", x => new { x.BookId, x.GenreId });
                     table.ForeignKey(
-                        name: "FK_Books_Genres_GenreId",
+                        name: "FK_Book_Genres_Books_BookId",
+                        column: x => x.BookId,
+                        principalTable: "Books",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Book_Genres_Genres_GenreId",
                         column: x => x.GenreId,
                         principalTable: "Genres",
                         principalColumn: "Id",
@@ -182,6 +199,11 @@ namespace Library.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Book_Genres_GenreId",
+                table: "Book_Genres",
+                column: "GenreId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BookCopies_BookId",
                 table: "BookCopies",
                 column: "BookId");
@@ -190,11 +212,6 @@ namespace Library.Migrations
                 name: "IX_Books_AuthorId",
                 table: "Books",
                 column: "AuthorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Books_GenreId",
-                table: "Books",
-                column: "GenreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Borrows_BookCopyId",
@@ -221,7 +238,13 @@ namespace Library.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Book_Genres");
+
+            migrationBuilder.DropTable(
                 name: "Borrows");
+
+            migrationBuilder.DropTable(
+                name: "Genres");
 
             migrationBuilder.DropTable(
                 name: "BookCopies");
@@ -240,9 +263,6 @@ namespace Library.Migrations
 
             migrationBuilder.DropTable(
                 name: "Authors");
-
-            migrationBuilder.DropTable(
-                name: "Genres");
         }
     }
 }
