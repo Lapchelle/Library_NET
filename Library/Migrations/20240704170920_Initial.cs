@@ -102,7 +102,7 @@ namespace Library.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "text", nullable: true),
-                    AuthorId = table.Column<int>(type: "integer", nullable: false),
+                    AuthorId = table.Column<int>(type: "integer", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DateUpdated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     PublishDate = table.Column<string>(type: "text", nullable: true),
@@ -117,8 +117,7 @@ namespace Library.Migrations
                         name: "FK_Books_Authors_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Authors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(

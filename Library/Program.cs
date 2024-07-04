@@ -1,6 +1,11 @@
 using Library;
 using Library.Data;
+using Library.Interface;
+using Library.Repository;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using System.Text.Json.Serialization;
+
 
 
 
@@ -10,6 +15,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddControllers().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+
+
+builder.Services.AddScoped<IBookRepository, BookRepository>();
+
+
+
+
 builder.Services.AddDbContext<PostgresContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
@@ -17,6 +32,8 @@ builder.Services.AddDbContext<PostgresContext>(options => {
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

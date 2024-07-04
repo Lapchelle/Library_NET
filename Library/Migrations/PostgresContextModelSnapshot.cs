@@ -80,7 +80,7 @@ namespace Library.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("DateCreated")
@@ -268,9 +268,7 @@ namespace Library.Migrations
                 {
                     b.HasOne("Library.Domain.Author", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.Navigation("Author");
                 });

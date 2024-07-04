@@ -11,6 +11,10 @@ namespace Library.Mapping
             CreateMap<Borrow, BorrowDto>();
             CreateMap<BorrowDto, Borrow>();
 
+            CreateMap<Book, BookDto>();
+            CreateMap<BookDto, Book>();
+
+
         }
            
 

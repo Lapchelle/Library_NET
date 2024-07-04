@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Library.Migrations
 {
     [DbContext(typeof(PostgresContext))]
-    [Migration("20240703161451_Initial")]
+    [Migration("20240704170920_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -83,7 +83,7 @@ namespace Library.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("DateCreated")
@@ -271,9 +271,7 @@ namespace Library.Migrations
                 {
                     b.HasOne("Library.Domain.Author", "Author")
                         .WithMany()
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.Navigation("Author");
                 });

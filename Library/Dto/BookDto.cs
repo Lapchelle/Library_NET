@@ -1,22 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Library.Domain;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Library.Domain
+namespace Library.Dto
 {
-    public class Book
+    public class BookDto    
     {
-        [Key]
+
         public int Id { get; set; }
         public string? Title { get; set; }
-        //[ForeignKey("Author")]
-        //public int? AuthorId { get; set; }
-        public Author? Author { get; set; }
+        
+
         public DateTime? DateCreated { get; set; }
 
         public DateTime? DateUpdated { get; set; }
-        public virtual ICollection<Book_Genre> Book_Genres { get; set; }
-
-
 
         public string? PublishDate { get; set; }
 
@@ -24,11 +20,6 @@ namespace Library.Domain
 
         public int? PageCount { get; set; }
 
-        
-
         public bool? IsPublic { get; set; }
-
-
-        public ICollection<BookCopy> BookCopies { get; set; }
     }
 }
