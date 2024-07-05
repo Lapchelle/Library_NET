@@ -14,6 +14,9 @@ namespace Library.Mapping
             CreateMap<Book, BookDto>();
             CreateMap<BookDto, Book>();
 
+            CreateMap<Genre, GenreDto>();
+            CreateMap<GenreDto, Genre>();
+
 
         }
            

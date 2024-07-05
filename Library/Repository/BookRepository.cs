@@ -18,22 +18,22 @@ namespace Library.Repository
             return _context.Books.Any(c => c.Id == id);
         }
 
-        public bool CreateBook( Book Book)
+        public bool CreateBook(genreId, Book Book)
         {
 
-            //var genre = _context.Genres.Where(a => a.Id == genreId).FirstOrDefault();
+            var genre = _context.Genres.Where(a => a.Id == genreId).FirstOrDefault();
 
 
 
 
 
-            // var bookGenre = new Book_Genre()
-            // {
-            //Genre = genre,
-            // Book = Book,
-            //};
+            var bookGenre = new Book_Genre()
+             {
+                Genre = genre,
+                Book = Book,
+                };
 
-            //_context.Add(bookGenre);
+            _context.Add(bookGenre);
 
             _context.Add(Book);
 

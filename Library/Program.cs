@@ -21,7 +21,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 
 
 builder.Services.AddScoped<IBookRepository, BookRepository>();
-
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
 
 
