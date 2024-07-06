@@ -16,5 +16,6 @@ namespace Library.Interface
         bool DeleteGenre(Genre genre);
         bool Save();
         object GetGenreTrimToUpper(GenreDto genreCreate);
+        public ICollection<Book> GetBookByGenre(int genreId);
     }
 }

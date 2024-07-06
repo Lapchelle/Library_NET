@@ -1,23 +1,24 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Library.Domain
 {
-    public class User
+    
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string? LastName { get; set; }
+        
+        
 
         
-        public bool IsAdmin { get; set; }
+        public string? FullName { get; set; }
+
+        
        
 
-        public string Email { get; set; }
-
         
-        public ICollection<Borrow> Borrows { get; set; }
+        //public ICollection<Borrow> Borrows { get; set; }
 
         
     }

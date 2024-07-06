@@ -2,26 +2,31 @@
 using Library.Domain;
 using Library.Dto;
 using Library.Interface;
+using Library.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Controllers
 {
-
+    [Authorize(Roles = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class BookController : Controller
     {
         private readonly IBookRepository _bookRepository;
-        
+
+        private readonly IGenreRepository _genreRepository;
+
         private readonly IMapper _mapper;
 
-        public BookController(IBookRepository bookRepository,
+        public BookController(IBookRepository bookRepository, IGenreRepository genreRepository,
             
             IMapper mapper)
         {
             _bookRepository = bookRepository;
-            
             _mapper = mapper;
+
+            _genreRepository = genreRepository;
         }
 
 
@@ -53,16 +58,31 @@ namespace Library.Controllers
             return Ok(Book);
         }
 
+        [HttpGet("{bookId}/bookcopies")]
+        public IActionResult GetBookCopiesByBook(int bookId)
+        {
+            if (!_bookRepository.BookExists(bookId))
+                return NotFound();
+
+            var books = _mapper.Map<List<BookCopyDto>>(
+                _bookRepository.GetBookCopiesByBook(bookId));
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(books);
+        }
 
 
 
 
 
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateBook( [FromBody] BookDto bookCreate)
+        public IActionResult CreateBook( [FromQuery] int genreId, [FromBody] BookDto bookCreate)
         {
             if (bookCreate == null)
                 return BadRequest(ModelState);
@@ -79,9 +99,9 @@ namespace Library.Controllers
                 return BadRequest(ModelState);
 
             var bookMap = _mapper.Map<Book>(bookCreate);
+            
 
-
-            if (!_bookRepository.CreateBook( bookMap))
+            if (!_bookRepository.CreateBook(genreId,bookMap))
             {
                 ModelState.AddModelError("", "Something went wrong while savin");
                 return StatusCode(500, ModelState);
@@ -94,7 +114,7 @@ namespace Library.Controllers
 
 
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{bookId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -129,20 +149,20 @@ namespace Library.Controllers
 
 
 
-
-        [HttpDelete("{pokeId}")]
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{bookId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteBook(int pokeId)
+        public IActionResult DeleteBook(int bookId)
         {
-            if (!_bookRepository.BookExists(pokeId))
+            if (!_bookRepository.BookExists(bookId))
             {
                 return NotFound();
             }
 
             
-            var BookToDelete = _bookRepository.GetBook(pokeId);
+            var BookToDelete = _bookRepository.GetBook(bookId);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

@@ -2,10 +2,12 @@
 using Library.Domain;
 using Library.Dto;
 using Library.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Controllers
 {
+    [Authorize(Roles = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class GenreController : Controller
@@ -52,12 +54,24 @@ namespace Library.Controllers
             return Ok(Genre);
         }
 
+        [HttpGet("book/{genreId}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Book>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetBookByGenreId(int genreId)
+        {
+            var books = _mapper.Map<List<BookDto>>(
+                _GenreRepository.GetBookByGenre(genreId));
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(books);
+        }
 
 
 
 
-
-
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -93,7 +107,7 @@ namespace Library.Controllers
 
 
 
-
+        [Authorize(Roles = "Admin")]
         [HttpPut("{genreId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -128,20 +142,20 @@ namespace Library.Controllers
 
 
 
-
-        [HttpDelete("{pokeId}")]
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("{genreId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult DeleteGenre(int pokeId)
+        public IActionResult DeleteGenre(int genreId)
         {
-            if (!_GenreRepository.GenreExists(pokeId))
+            if (!_GenreRepository.GenreExists(genreId))
             {
                 return NotFound();
             }
 
 
-            var GenreToDelete = _GenreRepository.GetGenre(pokeId);
+            var GenreToDelete = _GenreRepository.GetGenre(genreId);
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

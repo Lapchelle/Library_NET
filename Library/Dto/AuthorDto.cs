@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Library.Domain
+﻿namespace Library.Dto
 {
-    public class Author
+    public class AuthorDto
     {
-        [Key]
         public int Id { get; set; }
         public string FirstName { get; set; }
 
@@ -13,7 +10,5 @@ namespace Library.Domain
         public DateTime DateOfBirth { get; set; }
 
         public string Biography { get; set; }
-
-        public ICollection<Book>? Books { get; set; }
     }
 }

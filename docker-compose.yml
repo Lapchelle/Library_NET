@@ -1,0 +1,17 @@
+﻿services:
+  postgres:
+    container_name: myproject
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: library2
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 4160
+    ports:
+      - 5433:5432
+    volumes:
+      - /Рабочий стол/var/postgresql/data
+
+
+
+  

@@ -18,6 +18,21 @@ namespace Library.Mapping
             CreateMap<GenreDto, Genre>();
 
 
+            CreateMap<Author, AuthorDto>();
+            CreateMap<AuthorDto, Author>();
+
+
+            CreateMap<Router, RouterDto>();
+            CreateMap<RouterDto, Router>();
+
+
+            CreateMap<BookCopy, BookCopyDto>();
+            CreateMap<BookCopyDto, BookCopy>();
+
+
+            //CreateMap<User, UserDto>();
+            //CreateMap<UserDto, User>();
+
         }
            
 

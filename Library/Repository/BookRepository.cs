@@ -1,4 +1,5 @@
-﻿using Library.Data;
+﻿using AutoMapper;
+using Library.Data;
 using Library.Domain;
 using Library.Dto;
 using Library.Interface;
@@ -8,17 +9,19 @@ namespace Library.Repository
     public class BookRepository : IBookRepository
     {
         private PostgresContext _context;
+        private readonly IMapper _mapper;
 
-        public BookRepository(PostgresContext context)
+        public BookRepository(PostgresContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
         public bool BookExists(int id)
         {
             return _context.Books.Any(c => c.Id == id);
         }
 
-        public bool CreateBook(genreId, Book Book)
+        public bool CreateBook(int genreId, Book Book)
         {
 
             var genre = _context.Genres.Where(a => a.Id == genreId).FirstOrDefault();
@@ -72,6 +75,11 @@ namespace Library.Repository
         {
             _context.Update(Book);
             return Save();
+        }
+
+        public ICollection<BookCopy> GetBookCopiesByBook(int bookId)
+        {
+            return _context.BookCopies.Where(r => r.Book.Id == bookId).ToList();
         }
     }
 }

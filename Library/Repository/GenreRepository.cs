@@ -59,5 +59,10 @@ namespace Library.Repository
             _context.Update(genre);
             return Save();
         }
+
+        public ICollection<Book> GetBookByGenre(int genreId)
+        {
+            return _context.Book_Genres.Where(e => e.GenreId == genreId).Select(c => c.Book).ToList();
+        }
     }
 }

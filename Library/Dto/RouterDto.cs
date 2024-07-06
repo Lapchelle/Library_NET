@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Library.Domain
+﻿namespace Library.Dto
 {
-    public class Router
+    public class RouterDto
     {
         public int Id { get; set; }
 
@@ -15,8 +13,6 @@ namespace Library.Domain
         public string? City { get; set; }
         public string? Region { get; set; }
 
-        public string? ContactNumber { get; set; }  
-
-        public ICollection<Borrow> Borrows { get; set; }
+        public int ContactNumber { get; set; }
     }
 }

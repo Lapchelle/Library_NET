@@ -9,12 +9,13 @@ namespace Library.Repository
         ICollection<Borrow> GetBorrows();
         Borrow GetBorrow(int id);
 
-        public  Task<IEnumerable<Borrow>> GetAllBorrowsByRouter(string name);
+
 
         bool BorrowExists(int id);
-        bool CreateBorrow( Borrow Borrow);
-        bool UpdateBorrow(int user_id, int router_id, Borrow Borrow);
-        bool DeleteBorrow(Borrow borrow);
+        bool CreateBorrow(Borrow Borrow);
+        bool UpdateBorrow(Borrow Borrow);
+        bool DeleteBorrow(Borrow Borrow);
         bool Save();
+        
     }
 }

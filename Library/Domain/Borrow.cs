@@ -8,15 +8,22 @@ namespace Library.Domain
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("User")]
-        public int? UserId { get; set; }
+        public string? Name { get; set; }
 
-        public User? User { get; set; }
+        //[ForeignKey("User")]
+        //public Guid? UserId { get; set; }
+
+        //public User? User { get; set; }
 
         [ForeignKey("Router")]
         public int? RouterId { get; set; }
 
-        public Router? Routers { get; set; }
+        public Router? Router { get; set; }
+
+        [ForeignKey("BookCopy")]
+        public int? CopyId { get; set; }
+
+        public BookCopy? BookCopy { get; set; }
 
         public DateTime Borrow_Date { get; set; }
 

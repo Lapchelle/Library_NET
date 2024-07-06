@@ -1,4 +1,5 @@
-﻿using Library.Data;
+﻿using AutoMapper;
+using Library.Data;
 using Library.Domain;
 using Library.Dto;
 using Microsoft.EntityFrameworkCore;
@@ -10,30 +11,28 @@ namespace Library.Repository
     public class BorrowRepository : IBorrowRepository
     {
         private PostgresContext _context;
-
-        public BorrowRepository(PostgresContext context)
+        private readonly IMapper _mapper;
+        public BorrowRepository(PostgresContext context, IMapper mapper)
         {
             _context = context;
+
+            _mapper = mapper;
         }
         public bool BorrowExists(int id)
         {
             return _context.Borrows.Any(c => c.Id == id);
         }
 
-        public bool CreateBorrow(Borrow Borrow)
+        
+
+        public bool CreateBorrow( Borrow Borrow)
         {
-            
-
-
-
-
+           
 
             _context.Add(Borrow);
 
             return Save();
         }
-
-        
 
         public bool DeleteBorrow(Borrow borrow)
         {
@@ -43,7 +42,7 @@ namespace Library.Repository
 
         public async Task<IEnumerable<Borrow>> GetAllBorrowsByRouter(string name)
         {
-            return await _context.Borrows.Where(c => c.Routers.FirstName.Contains(name)).ToListAsync();
+            return await _context.Borrows.Where(c => c.Router.FirstName.Contains(name)).ToListAsync();
         }
 
         public Borrow GetBorrow(int id)
@@ -56,7 +55,8 @@ namespace Library.Repository
             return _context.Borrows.OrderBy(p => p.Id).ToList();
         }
 
-      
+       
+
         public bool Save()
         {
             var saved = _context.SaveChanges();
@@ -65,7 +65,7 @@ namespace Library.Repository
 
        
 
-        public bool UpdateBorrow(int user_id, int router_id, Borrow Borrow)
+        public bool UpdateBorrow( Borrow Borrow)
         {
             _context.Update(Borrow);
             return Save();
