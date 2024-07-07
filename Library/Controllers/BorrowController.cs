@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Controllers
 {
-    [Authorize(Roles = "User")]
+    //[Authorize(Roles = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class BorrowController : Controller
@@ -73,7 +73,7 @@ namespace Library.Controllers
                 return BadRequest(ModelState);
 
             var borrow = _BorrowRepository.GetBorrows()
-                .Where(c => c.Name.Trim().ToUpper() == BorrowCreate.Name.TrimEnd().ToUpper())
+                .Where(c => c.Desription.Trim().ToUpper() == BorrowCreate.Desription.TrimEnd().ToUpper())
                 .FirstOrDefault();
 
             if (borrow != null)

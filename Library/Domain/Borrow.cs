@@ -8,28 +8,25 @@ namespace Library.Domain
         [Key]
         public int Id { get; set; }
 
-        public string? Name { get; set; }
+        public string? Desription { get; set; }
 
         //[ForeignKey("User")]
         //public Guid? UserId { get; set; }
 
         //public User? User { get; set; }
 
-        [ForeignKey("Router")]
-        public int? RouterId { get; set; }
+        
 
-        public Router? Router { get; set; }
+        public User? User { get; set; }
 
-        [ForeignKey("BookCopy")]
-        public int? CopyId { get; set; }
-
-        public BookCopy? BookCopy { get; set; }
+        
+       public ICollection<Book> Books { get; set; }
 
         public DateTime Borrow_Date { get; set; }
 
-        public DateTime Return_Date { get; set; }
+        public string Return_Date { get; set; }
 
-        public DateTime Return_Condition { get; set; }
+        public string Return_Condition { get; set; }
 
 
     }

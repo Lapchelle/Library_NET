@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Library.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +32,8 @@ namespace Library.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     FullName = table.Column<string>(type: "text", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Address = table.Column<string>(type: "text", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -80,24 +82,6 @@ namespace Library.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Genres", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Routers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FirstName = table.Column<string>(type: "text", nullable: false),
-                    LastName = table.Column<string>(type: "text", nullable: false),
-                    Street = table.Column<string>(type: "text", nullable: true),
-                    City = table.Column<string>(type: "text", nullable: true),
-                    Region = table.Column<string>(type: "text", nullable: true),
-                    ContactNumber = table.Column<string>(type: "text", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Routers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -207,6 +191,28 @@ namespace Library.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Borrows",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Desription = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    Borrow_Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Return_Date = table.Column<string>(type: "text", nullable: false),
+                    Return_Condition = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Borrows", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Borrows_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Books",
                 columns: table => new
                 {
@@ -216,10 +222,14 @@ namespace Library.Migrations
                     AuthorId = table.Column<int>(type: "integer", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DateUpdated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ImageUrl = table.Column<string>(type: "text", nullable: false),
                     PublishDate = table.Column<string>(type: "text", nullable: true),
                     PublishHouse = table.Column<string>(type: "text", nullable: true),
                     PageCount = table.Column<int>(type: "integer", nullable: true),
-                    IsPublic = table.Column<bool>(type: "boolean", nullable: true)
+                    BorrowId = table.Column<int>(type: "integer", nullable: true),
+                    IsPublic = table.Column<bool>(type: "boolean", nullable: true),
+                    total_Copies = table.Column<int>(type: "integer", nullable: false),
+                    Condition = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -228,6 +238,11 @@ namespace Library.Migrations
                         name: "FK_Books_Authors_AuthorId",
                         column: x => x.AuthorId,
                         principalTable: "Authors",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Books_Borrows_BorrowId",
+                        column: x => x.BorrowId,
+                        principalTable: "Borrows",
                         principalColumn: "Id");
                 });
 
@@ -256,51 +271,31 @@ namespace Library.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BookCopies",
+                name: "Reviews",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    Condition = table.Column<string>(type: "text", nullable: false),
-                    BookId = table.Column<int>(type: "integer", nullable: true)
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Text = table.Column<string>(type: "text", nullable: false),
+                    Rating = table.Column<int>(type: "integer", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: true),
+                    BookId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BookCopies", x => x.Id);
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BookCopies_Books_BookId",
+                        name: "FK_Reviews_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Reviews_Books_BookId",
                         column: x => x.BookId,
                         principalTable: "Books",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Borrows",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    RouterId = table.Column<int>(type: "integer", nullable: true),
-                    CopyId = table.Column<int>(type: "integer", nullable: true),
-                    Borrow_Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Return_Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Return_Condition = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Borrows", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Borrows_BookCopies_CopyId",
-                        column: x => x.CopyId,
-                        principalTable: "BookCopies",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Borrows_Routers_RouterId",
-                        column: x => x.RouterId,
-                        principalTable: "Routers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -346,24 +341,29 @@ namespace Library.Migrations
                 column: "GenreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BookCopies_BookId",
-                table: "BookCopies",
-                column: "BookId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Books_AuthorId",
                 table: "Books",
                 column: "AuthorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Borrows_CopyId",
-                table: "Borrows",
-                column: "CopyId");
+                name: "IX_Books_BorrowId",
+                table: "Books",
+                column: "BorrowId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Borrows_RouterId",
+                name: "IX_Borrows_UserId",
                 table: "Borrows",
-                column: "RouterId");
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_BookId",
+                table: "Reviews",
+                column: "BookId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reviews_UserId",
+                table: "Reviews",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -388,28 +388,25 @@ namespace Library.Migrations
                 name: "Book_Genres");
 
             migrationBuilder.DropTable(
-                name: "Borrows");
+                name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
-
-            migrationBuilder.DropTable(
                 name: "Genres");
-
-            migrationBuilder.DropTable(
-                name: "BookCopies");
-
-            migrationBuilder.DropTable(
-                name: "Routers");
 
             migrationBuilder.DropTable(
                 name: "Books");
 
             migrationBuilder.DropTable(
                 name: "Authors");
+
+            migrationBuilder.DropTable(
+                name: "Borrows");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }

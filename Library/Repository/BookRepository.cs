@@ -77,9 +77,6 @@ namespace Library.Repository
             return Save();
         }
 
-        public ICollection<BookCopy> GetBookCopiesByBook(int bookId)
-        {
-            return _context.BookCopies.Where(r => r.Book.Id == bookId).ToList();
-        }
+        
     }
 }

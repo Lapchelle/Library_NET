@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Controllers
 {
-    [Authorize(Roles = "User")]
+    //[Authorize(Roles = "User")]
     [Route("api/[controller]")]
     [ApiController]
     public class GenreController : Controller
@@ -71,7 +71,7 @@ namespace Library.Controllers
 
 
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -107,7 +107,7 @@ namespace Library.Controllers
 
 
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut("{genreId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -142,7 +142,7 @@ namespace Library.Controllers
 
 
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{genreId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]

@@ -21,13 +21,9 @@ namespace Library.Mapping
             CreateMap<Author, AuthorDto>();
             CreateMap<AuthorDto, Author>();
 
+            CreateMap<Review, ReviewDto>();
+            CreateMap<ReviewDto, Review>();
 
-            CreateMap<Router, RouterDto>();
-            CreateMap<RouterDto, Router>();
-
-
-            CreateMap<BookCopy, BookCopyDto>();
-            CreateMap<BookCopyDto, BookCopy>();
 
 
             //CreateMap<User, UserDto>();

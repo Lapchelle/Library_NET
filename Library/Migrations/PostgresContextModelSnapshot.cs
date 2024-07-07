@@ -61,11 +61,21 @@ namespace Library.Migrations
                     b.Property<int?>("AuthorId")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("BorrowId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Condition")
+                        .HasColumnType("text");
+
                     b.Property<DateTime?>("DateCreated")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<bool?>("IsPublic")
                         .HasColumnType("boolean");
@@ -82,37 +92,16 @@ namespace Library.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("text");
 
+                    b.Property<int>("total_Copies")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
+                    b.HasIndex("BorrowId");
+
                     b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("Library.Domain.BookCopy", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("BookId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Condition")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.ToTable("BookCopies");
                 });
 
             modelBuilder.Entity("Library.Domain.Book_Genre", b =>
@@ -141,26 +130,23 @@ namespace Library.Migrations
                     b.Property<DateTime>("Borrow_Date")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("CopyId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("Desription")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("Return_Condition")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Return_Condition")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<DateTime>("Return_Date")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<string>("Return_Date")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int?>("RouterId")
-                        .HasColumnType("integer");
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CopyId");
-
-                    b.HasIndex("RouterId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Borrows");
                 });
@@ -186,7 +172,7 @@ namespace Library.Migrations
                     b.ToTable("Genres");
                 });
 
-            modelBuilder.Entity("Library.Domain.Router", b =>
+            modelBuilder.Entity("Library.Domain.Review", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -194,29 +180,30 @@ namespace Library.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("City")
-                        .HasColumnType("text");
+                    b.Property<int>("BookId")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("ContactNumber")
-                        .HasColumnType("text");
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("FirstName")
+                    b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("LastName")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Region")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Street")
+                    b.Property<string>("UserId")
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Routers");
+                    b.HasIndex("BookId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("Library.Domain.User", b =>
@@ -227,8 +214,14 @@ namespace Library.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<string>("Email")
@@ -424,16 +417,13 @@ namespace Library.Migrations
                         .WithMany("Books")
                         .HasForeignKey("AuthorId");
 
+                    b.HasOne("Library.Domain.Borrow", "Borrow")
+                        .WithMany("Books")
+                        .HasForeignKey("BorrowId");
+
                     b.Navigation("Author");
-                });
 
-            modelBuilder.Entity("Library.Domain.BookCopy", b =>
-                {
-                    b.HasOne("Library.Domain.Book", "Book")
-                        .WithMany("BookCopies")
-                        .HasForeignKey("BookId");
-
-                    b.Navigation("Book");
+                    b.Navigation("Borrow");
                 });
 
             modelBuilder.Entity("Library.Domain.Book_Genre", b =>
@@ -457,17 +447,28 @@ namespace Library.Migrations
 
             modelBuilder.Entity("Library.Domain.Borrow", b =>
                 {
-                    b.HasOne("Library.Domain.BookCopy", "BookCopy")
-                        .WithMany("Borrows")
-                        .HasForeignKey("CopyId");
+                    b.HasOne("Library.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
-                    b.HasOne("Library.Domain.Router", "Router")
-                        .WithMany("Borrows")
-                        .HasForeignKey("RouterId");
+                    b.Navigation("User");
+                });
 
-                    b.Navigation("BookCopy");
+            modelBuilder.Entity("Library.Domain.Review", b =>
+                {
+                    b.HasOne("Library.Domain.Book", "Book")
+                        .WithMany("Reviews")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Router");
+                    b.HasOne("Library.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Book");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -528,24 +529,19 @@ namespace Library.Migrations
 
             modelBuilder.Entity("Library.Domain.Book", b =>
                 {
-                    b.Navigation("BookCopies");
-
                     b.Navigation("Book_Genres");
+
+                    b.Navigation("Reviews");
                 });
 
-            modelBuilder.Entity("Library.Domain.BookCopy", b =>
+            modelBuilder.Entity("Library.Domain.Borrow", b =>
                 {
-                    b.Navigation("Borrows");
+                    b.Navigation("Books");
                 });
 
             modelBuilder.Entity("Library.Domain.Genre", b =>
                 {
                     b.Navigation("Book_Genres");
-                });
-
-            modelBuilder.Entity("Library.Domain.Router", b =>
-                {
-                    b.Navigation("Borrows");
                 });
 #pragma warning restore 612, 618
         }

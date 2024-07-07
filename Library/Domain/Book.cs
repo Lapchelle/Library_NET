@@ -16,7 +16,7 @@ namespace Library.Domain
         public DateTime? DateUpdated { get; set; }
         public virtual ICollection<Book_Genre> Book_Genres { get; set; }
 
-
+        public string ImageUrl { get; set; }
 
         public string? PublishDate { get; set; }
 
@@ -24,11 +24,18 @@ namespace Library.Domain
 
         public int? PageCount { get; set; }
 
+        [ForeignKey("Borrow")]
+        public int? BorrowId {  get; set; }
         
+        public Borrow? Borrow { get; set; }
 
         public bool? IsPublic { get; set; }
 
 
-        public ICollection<BookCopy> BookCopies { get; set; }
+        public int total_Copies { get; set; }
+
+        public string? Condition {  get; set; } 
+
+        public ICollection<Review> Reviews { get; set; }
     }
 }

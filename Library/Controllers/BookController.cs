@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Controllers
 {
-    [Authorize(Roles = "User")]
+    
     [Route("api/[controller]")]
     [ApiController]
     public class BookController : Controller
@@ -58,27 +58,14 @@ namespace Library.Controllers
             return Ok(Book);
         }
 
-        [HttpGet("{bookId}/bookcopies")]
-        public IActionResult GetBookCopiesByBook(int bookId)
-        {
-            if (!_bookRepository.BookExists(bookId))
-                return NotFound();
-
-            var books = _mapper.Map<List<BookCopyDto>>(
-                _bookRepository.GetBookCopiesByBook(bookId));
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-
-            return Ok(books);
-        }
+        
 
 
 
 
 
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
@@ -114,7 +101,7 @@ namespace Library.Controllers
 
 
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpPut("{bookId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
@@ -149,7 +136,7 @@ namespace Library.Controllers
 
 
 
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         [HttpDelete("{bookId}")]
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]

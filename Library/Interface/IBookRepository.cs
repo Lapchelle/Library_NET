@@ -9,7 +9,7 @@ namespace Library.Interface
         Book GetBook(int id);
 
 
-        ICollection<BookCopy> GetBookCopiesByBook(int bookId);
+        
         bool BookExists(int id);
         bool CreateBook( int genreId, Book Book);
         bool UpdateBook(int genreId, Book Book);

@@ -40,9 +40,9 @@ namespace Library.Repository
             return Save();
         }
 
-        public async Task<IEnumerable<Borrow>> GetAllBorrowsByRouter(string name)
+        public async Task<IEnumerable<Borrow>> GetAllBorrowsByUser(string name)
         {
-            return await _context.Borrows.Where(c => c.Router.FirstName.Contains(name)).ToListAsync();
+            return await _context.Borrows.Where(c => c.User.FullName.Contains(name)).ToListAsync();
         }
 
         public Borrow GetBorrow(int id)
