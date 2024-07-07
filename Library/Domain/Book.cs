@@ -14,9 +14,13 @@ namespace Library.Domain
         public DateTime? DateCreated { get; set; }
 
         public DateTime? DateUpdated { get; set; }
-        public virtual ICollection<Book_Genre> Book_Genres { get; set; }
+        
+        [ForeignKey("Genre")]
+        public int? GenreId { get; set; }
 
-        public string ImageUrl { get; set; }
+        public Genre? Genre { get; set; }
+
+        public string? ImageUrl { get; set; }
 
         public string? PublishDate { get; set; }
 

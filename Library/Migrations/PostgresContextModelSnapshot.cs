@@ -73,8 +73,10 @@ namespace Library.Migrations
                     b.Property<DateTime?>("DateUpdated")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int?>("GenreId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<bool?>("IsPublic")
@@ -101,22 +103,9 @@ namespace Library.Migrations
 
                     b.HasIndex("BorrowId");
 
-                    b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("Library.Domain.Book_Genre", b =>
-                {
-                    b.Property<int>("BookId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("GenreId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("BookId", "GenreId");
-
                     b.HasIndex("GenreId");
 
-                    b.ToTable("Book_Genres");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("Library.Domain.Borrow", b =>
@@ -421,26 +410,13 @@ namespace Library.Migrations
                         .WithMany("Books")
                         .HasForeignKey("BorrowId");
 
+                    b.HasOne("Library.Domain.Genre", "Genre")
+                        .WithMany("Books")
+                        .HasForeignKey("GenreId");
+
                     b.Navigation("Author");
 
                     b.Navigation("Borrow");
-                });
-
-            modelBuilder.Entity("Library.Domain.Book_Genre", b =>
-                {
-                    b.HasOne("Library.Domain.Book", "Book")
-                        .WithMany("Book_Genres")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Library.Domain.Genre", "Genre")
-                        .WithMany("Book_Genres")
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
 
                     b.Navigation("Genre");
                 });
@@ -529,8 +505,6 @@ namespace Library.Migrations
 
             modelBuilder.Entity("Library.Domain.Book", b =>
                 {
-                    b.Navigation("Book_Genres");
-
                     b.Navigation("Reviews");
                 });
 
@@ -541,7 +515,7 @@ namespace Library.Migrations
 
             modelBuilder.Entity("Library.Domain.Genre", b =>
                 {
-                    b.Navigation("Book_Genres");
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

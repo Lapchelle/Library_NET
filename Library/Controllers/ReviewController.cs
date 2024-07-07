@@ -68,7 +68,7 @@ namespace Library.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateReview([FromQuery] int bookId, [FromBody] ReviewDto reviewCreate)
+        public IActionResult CreateReview( [FromBody] ReviewDto reviewCreate)
         {
             if (reviewCreate == null)
                 return BadRequest(ModelState);
@@ -89,7 +89,7 @@ namespace Library.Controllers
             var reviewMap = _mapper.Map<Review>(reviewCreate);
 
             
-            reviewMap.Book = _bookRepository.GetBook(bookId);
+           
 
 
             if (!_reviewRepository.CreateReview(reviewMap))

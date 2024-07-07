@@ -62,7 +62,7 @@ namespace Library.Repository
 
         public ICollection<Book> GetBookByGenre(int genreId)
         {
-            return _context.Book_Genres.Where(e => e.GenreId == genreId).Select(c => c.Book).ToList();
+            return _context.Books.Where(r => r.Genre.Id == genreId).ToList();
         }
     }
 }

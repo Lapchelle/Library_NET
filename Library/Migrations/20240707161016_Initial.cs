@@ -222,7 +222,8 @@ namespace Library.Migrations
                     AuthorId = table.Column<int>(type: "integer", nullable: true),
                     DateCreated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DateUpdated = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    ImageUrl = table.Column<string>(type: "text", nullable: false),
+                    GenreId = table.Column<int>(type: "integer", nullable: true),
+                    ImageUrl = table.Column<string>(type: "text", nullable: true),
                     PublishDate = table.Column<string>(type: "text", nullable: true),
                     PublishHouse = table.Column<string>(type: "text", nullable: true),
                     PageCount = table.Column<int>(type: "integer", nullable: true),
@@ -244,30 +245,11 @@ namespace Library.Migrations
                         column: x => x.BorrowId,
                         principalTable: "Borrows",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Book_Genres",
-                columns: table => new
-                {
-                    BookId = table.Column<int>(type: "integer", nullable: false),
-                    GenreId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Book_Genres", x => new { x.BookId, x.GenreId });
                     table.ForeignKey(
-                        name: "FK_Book_Genres_Books_BookId",
-                        column: x => x.BookId,
-                        principalTable: "Books",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Book_Genres_Genres_GenreId",
+                        name: "FK_Books_Genres_GenreId",
                         column: x => x.GenreId,
                         principalTable: "Genres",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -336,11 +318,6 @@ namespace Library.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Book_Genres_GenreId",
-                table: "Book_Genres",
-                column: "GenreId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Books_AuthorId",
                 table: "Books",
                 column: "AuthorId");
@@ -349,6 +326,11 @@ namespace Library.Migrations
                 name: "IX_Books_BorrowId",
                 table: "Books",
                 column: "BorrowId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_GenreId",
+                table: "Books",
+                column: "GenreId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Borrows_UserId",
@@ -385,16 +367,10 @@ namespace Library.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Book_Genres");
-
-            migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "Genres");
 
             migrationBuilder.DropTable(
                 name: "Books");
@@ -404,6 +380,9 @@ namespace Library.Migrations
 
             migrationBuilder.DropTable(
                 name: "Borrows");
+
+            migrationBuilder.DropTable(
+                name: "Genres");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

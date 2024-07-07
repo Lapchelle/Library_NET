@@ -11,7 +11,7 @@ namespace Library.Interface
 
         
         bool BookExists(int id);
-        bool CreateBook( int genreId, Book Book);
+        bool CreateBook( Book Book);
         bool UpdateBook(int genreId, Book Book);
         bool DeleteBook(Book Book);
         bool Save();

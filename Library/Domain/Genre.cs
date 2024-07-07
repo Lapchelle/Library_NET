@@ -8,7 +8,7 @@
 
         public string Description { get; set; }
 
-        public virtual ICollection<Book_Genre> Book_Genres { get; set; }
+        public virtual ICollection<Book> Books { get; set; }
 
     }
 }

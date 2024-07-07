@@ -69,7 +69,7 @@ namespace Library.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateBook( [FromQuery] int genreId, [FromBody] BookDto bookCreate)
+        public IActionResult CreateBook(  [FromBody] BookDto bookCreate)
         {
             if (bookCreate == null)
                 return BadRequest(ModelState);
@@ -88,7 +88,7 @@ namespace Library.Controllers
             var bookMap = _mapper.Map<Book>(bookCreate);
             
 
-            if (!_bookRepository.CreateBook(genreId,bookMap))
+            if (!_bookRepository.CreateBook(bookMap))
             {
                 ModelState.AddModelError("", "Something went wrong while savin");
                 return StatusCode(500, ModelState);
