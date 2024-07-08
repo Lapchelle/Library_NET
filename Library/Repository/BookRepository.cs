@@ -24,16 +24,6 @@ namespace Library.Repository
         public bool CreateBook( Book Book)
         {
 
-           
-
-
-
-
-
-           
-
-           
-
             _context.Add(Book);
 
             return Save();
@@ -73,6 +63,14 @@ namespace Library.Repository
             return Save();
         }
 
-        
+        public decimal GetBookRating(int bookId)
+        {
+            var review = _context.Reviews.Where(p => p.Book.Id == bookId);
+
+            if (review.Count() <= 0)
+                return 0;
+
+            return ((decimal)review.Sum(r => r.Rating) / review.Count());
+        }
     }
 }

@@ -6,7 +6,7 @@ namespace Library.Interface
     {
         ICollection<Review> GetReviews();
         Review GetReview(int reviewId);
-        ICollection<Review> GetReviewsOfABook(int pokeId);
+        ICollection<Review> GetReviewsOfABook(int bookId);
         bool ReviewExists(int reviewId);
         bool CreateReview(Review review);
         bool UpdateReview(Review review);
