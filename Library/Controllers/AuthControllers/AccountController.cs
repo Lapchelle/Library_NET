@@ -47,7 +47,9 @@ namespace Library.Controllers.AuthControllers
             {
                 Email = registerDto.Email,
 
-                UserName = registerDto.Email
+                FullName = registerDto.FullName,
+
+                Address = registerDto.Address,
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
@@ -191,7 +193,7 @@ namespace Library.Controllers.AuthControllers
                 Id = user.Id,
                 Email = user.Email,
                 FullName = user.FullName,
-                
+                Address = user.Address,
                 Roles = [.. await _userManager.GetRolesAsync(user)],
                 PhoneNumber = user.PhoneNumber,
                 PhoneNumberConfirmed = user.PhoneNumberConfirmed,

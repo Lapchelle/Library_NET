@@ -28,12 +28,7 @@ namespace Library.Domain
 
         public int? PageCount { get; set; }
 
-        [ForeignKey("Borrow")]
-        public int? BorrowId {  get; set; }
         
-        public Borrow? Borrow { get; set; }
-
-        public bool? IsPublic { get; set; }
 
 
         public int total_Copies { get; set; }

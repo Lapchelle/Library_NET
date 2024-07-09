@@ -10,7 +10,9 @@ namespace Library.Dto
         public string? Title { get; set; }
        
         public int? AuthorId { get; set; }
-       
+
+
+        public int? GenreId { get; set; }
         public DateTime? DateCreated { get; set; }
 
         public DateTime? DateUpdated { get; set; }
@@ -23,11 +25,11 @@ namespace Library.Dto
         public int? PageCount { get; set; }
 
         
-        public int? BorrowId { get; set; }
+       
 
        
 
-        public bool? IsPublic { get; set; }
+        
 
 
         public int total_Copies { get; set; }

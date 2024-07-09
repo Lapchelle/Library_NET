@@ -98,7 +98,21 @@ namespace Library.Controllers
         }
 
 
+        [HttpGet("{bookId}/rating")]
+        [ProducesResponseType(200, Type = typeof(decimal))]
+        [ProducesResponseType(400)]
+        public IActionResult GetBookRating(int pokeId)
+        {
+            if (!_bookRepository.BookExists(pokeId))
+                return NotFound();
 
+            var rating = _bookRepository.GetBookRating(pokeId);
+
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            return Ok(rating);
+        }
 
 
         //[Authorize(Roles = "Admin")]

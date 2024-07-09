@@ -8,7 +8,7 @@ namespace Library.Interface
         ICollection<Book> GetBooks();
         Book GetBook(int id);
 
-        decimal GetBookRating(int pokeId);
+        decimal GetBookRating(int bookId);
 
         bool BookExists(int id);
         bool CreateBook( Book Book);
