@@ -101,12 +101,12 @@ namespace Library.Controllers
         [HttpGet("{bookId}/rating")]
         [ProducesResponseType(200, Type = typeof(decimal))]
         [ProducesResponseType(400)]
-        public IActionResult GetBookRating(int pokeId)
+        public IActionResult GetBookRating(int bookId)
         {
-            if (!_bookRepository.BookExists(pokeId))
+            if (!_bookRepository.BookExists(bookId))
                 return NotFound();
 
-            var rating = _bookRepository.GetBookRating(pokeId);
+            var rating = _bookRepository.GetBookRating(bookId);
 
             if (!ModelState.IsValid)
                 return BadRequest();
@@ -121,7 +121,6 @@ namespace Library.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public IActionResult UpdateBook(int bookId,
-             [FromQuery] int genreId,
             [FromBody] BookDto updatedBook)
         {
             if (updatedBook == null)
@@ -138,7 +137,7 @@ namespace Library.Controllers
 
             var BookMap = _mapper.Map<Book>(updatedBook);
 
-            if (!_bookRepository.UpdateBook( genreId, BookMap))
+            if (!_bookRepository.UpdateBook(BookMap))
             {
                 ModelState.AddModelError("", "Something went wrong updating owner");
                 return StatusCode(500, ModelState);

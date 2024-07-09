@@ -24,10 +24,11 @@ namespace Library.Mapping
             CreateMap<Review, ReviewDto>();
             CreateMap<ReviewDto, Review>();
 
+            CreateMap<BookCopy, BookCopyDto>();
+            CreateMap<BookCopyDto, BookCopy>();
 
-
-            //CreateMap<User, UserDto>();
-            //CreateMap<UserDto, User>();
+            CreateMap<Reserves, ReservesDto>();
+            CreateMap<ReservesDto, Reserves>();
 
         }
            

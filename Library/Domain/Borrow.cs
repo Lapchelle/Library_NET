@@ -10,17 +10,20 @@ namespace Library.Domain
 
         public string? Desription { get; set; }
 
-        //[ForeignKey("User")]
-        //public Guid? UserId { get; set; }
+        [ForeignKey("BookCopy")]
+        public int? CopyId { get; set; }
 
-        //public User? User { get; set; }
+        public BookCopy? BookCopy { get; set; }
 
-        
+
+        [ForeignKey("User")]
+        public string? UserId { get; set; }
 
         public User? User { get; set; }
 
-        
-       public ICollection<Book> Books { get; set; }
+
+
+
 
         public DateTime Borrow_Date { get; set; }
 

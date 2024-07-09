@@ -44,7 +44,7 @@ namespace Library.Controllers
         [HttpGet("{authorId}")]
         [ProducesResponseType(200, Type = typeof(Author))]
         [ProducesResponseType(400)]
-        public IActionResult GetPokemon(int authorId)
+        public IActionResult GetAuthor(int authorId)
         {
             if (!_authorRepository.AuthorExists(authorId))
                 return NotFound();

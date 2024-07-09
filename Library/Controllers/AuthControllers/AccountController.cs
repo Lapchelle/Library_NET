@@ -47,9 +47,15 @@ namespace Library.Controllers.AuthControllers
             {
                 Email = registerDto.Email,
 
-                FullName = registerDto.FullName,
+                UserName = registerDto.UserName,
+
+                FirstName = registerDto.FirstName,
+
+                LastName = registerDto.LastName,
 
                 Address = registerDto.Address,
+
+                PhoneNumber = registerDto.Phone_number
             };
 
             var result = await _userManager.CreateAsync(user, registerDto.Password);
@@ -139,7 +145,8 @@ namespace Library.Controllers.AuthControllers
             List<Claim> claims =
             [
                 new (JwtRegisteredClaimNames.Email,user.Email??""),
-                new (JwtRegisteredClaimNames.Name,user.FullName??""),
+                new (JwtRegisteredClaimNames.Name,user.FirstName??""),
+                new (JwtRegisteredClaimNames.Name,user.LastName??""),
                 new (JwtRegisteredClaimNames.NameId,user.Id.ToString() ?? ""),
                 new (JwtRegisteredClaimNames.Aud,
                 _configuration.GetSection("JWTSetting").GetSection("validAudience").Value!),
@@ -190,9 +197,10 @@ namespace Library.Controllers.AuthControllers
 
             return Ok(new UserDetailDto
             {
-                Id = user.Id,
+                Id = user.Id.ToString(),
                 Email = user.Email,
-                FullName = user.FullName,
+                UserName = user.FirstName,
+                LastName = user.LastName,
                 Address = user.Address,
                 Roles = [.. await _userManager.GetRolesAsync(user)],
                 PhoneNumber = user.PhoneNumber,
@@ -212,7 +220,8 @@ namespace Library.Controllers.AuthControllers
                 Id = u.Id,
                 Email = u.Email,
 
-                FullName = u.FullName,
+                UserName = u.FirstName,
+                LastName = u.LastName,
                 Roles = _userManager.GetRolesAsync(u).Result.ToArray()
             }).ToListAsync();
 

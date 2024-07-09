@@ -57,7 +57,7 @@ namespace Library.Repository
             return saved > 0 ? true : false;
         }
 
-        public bool UpdateBook(int genreId, Book Book)
+        public bool UpdateBook(Book Book)
         {
             _context.Update(Book);
             return Save();

@@ -11,9 +11,7 @@ namespace Library.Domain
         [ForeignKey("Author")]
         public int? AuthorId { get; set; }
         public Author? Author { get; set; }
-        public DateTime? DateCreated { get; set; }
-
-        public DateTime? DateUpdated { get; set; }
+      
         
         [ForeignKey("Genre")]
         public int? GenreId { get; set; }
@@ -28,10 +26,10 @@ namespace Library.Domain
 
         public int? PageCount { get; set; }
 
-        
 
 
-        public int total_Copies { get; set; }
+
+       public ICollection<BookCopy> Copy { get; set; }
 
         public string? Condition {  get; set; } 
 

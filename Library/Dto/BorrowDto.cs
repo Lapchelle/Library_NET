@@ -9,17 +9,20 @@ namespace Library.Dto
 
         public string? Desription { get; set; }
 
-        //[ForeignKey("User")]
-        //public Guid? UserId { get; set; }
+       
+        public int? CopyId { get; set; }
 
-        //public User? User { get; set; }
-
-
-
-      
+       
 
 
-        
+       
+        public string? UserId { get; set; }
+
+       
+
+
+
+
 
         public DateTime Borrow_Date { get; set; }
 

@@ -33,8 +33,8 @@ builder.Services.AddScoped<IBookRepository, BookRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
-//builder.Services.AddScoped<IUserRepository, UserRepository>();
-
+builder.Services.AddScoped<IBookCopyRepository, BookCopyRepository>();
+builder.Services.AddScoped<IReserveRepository, ReserveRepository>();
 
 builder.Services.AddDbContext<PostgresContext>(options => {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -100,6 +100,12 @@ builder.Services.AddSwaggerGen(c => {
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); 
 var app = builder.Build();
+
+if (args.Length == 1 && args[0].ToLower() == "seeddata")
+{
+    await Seed.SeedUsersAndRolesAsync(app);
+    //Seed.SeedData(app);
+}
 
 using var scope = app.Services.CreateScope();
 await using var dbContext = scope.ServiceProvider.GetRequiredService<PostgresContext>();
